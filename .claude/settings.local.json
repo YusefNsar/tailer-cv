@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(~/bin/python3 -m pip list)",
+      "Bash(scripts/render_application.sh:*)",
+      "Bash(./scripts/render_application.sh:*)",
+      "Bash(scripts/check_layout.sh:*)",
+      "Bash(./scripts/check_layout.sh:*)"
+    ]
+  }
+}

@@ -1,0 +1,164 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json
+cv:
+  name: Yusef Nsar
+  headline: Senior Software Engineer
+  location: Cairo, Egypt
+  email: yusef.nsar.dev@gmail.com
+  phone: "+201551663871"
+  website: https://yusef-nsar.dev/
+  social_networks:
+    - network: LinkedIn
+      username: yusef-nsar
+    - network: GitHub
+      username: YusefNsar
+  sections:
+    Summary:
+      - Re-architected bank- and healthcare-scale platforms serving 1.7M+ users into distributed, AI-augmented, zero-downtime systems — cutting infrastructure costs 40%, API latency 4x, and hitting 99.9% reliability.
+    Professional Experience:
+      - company: Propio Languages Services
+        position: Senior Software Engineer
+        location: Kansas, USA
+        start_date: 2024-11
+        end_date: present
+        highlights:
+          - "Cut supplier and software monthly costs 40% by leading a 3-engineer team to build an in-house Node.js templating engine (build-vs-buy analysis, licensing/vendor lock-in review) now powering the core medical translation platform."
+          - "Built real-time collaborative infrastructure — WebRTC sessions, Kafka Streams pipelines, and a CRDT-based (Yjs) editing feature — supporting 20+ concurrent editors."
+          - "Eliminated 200+ person-hours/month of manual processing for major US medical insurers and hospitals, including Kaiser Permanente, by designing HIPAA-aligned integration pipelines (AWS KMS, IAM, CloudTrail)."
+          - "Cut p95 API latency from 900ms to under 200ms by leading an 8-month zero-downtime migration of a monolith to 12+ microservices (Strangler Fig, DDD, gRPC, Istio, AWS API Gateway)."
+          - "Cut MTTR from 45 to under 10 minutes by serving as incident commander across 10+ high-severity incidents; cut MTTD 60% by building Datadog/CloudWatch monitoring and SLO/SLA tracking."
+          - "Cut environment provisioning time 80% and moved deployments from weekly to daily across 100+ zero-failure releases by introducing CI/CD and IaC (GitHub Actions, ArgoCD, AWS CDK)."
+          - "Cut manual document review time 30% by shipping a RAG assistant (OpenAI API, pgvector) over the translation pipeline; mentored 4 engineers on system design and AI-assisted development (Claude Code, Cursor)."
+      - company: Commercial International Bank (CIB)
+        position: Full Stack Developer
+        location: Cairo, Egypt
+        start_date: 2023-11
+        end_date: 2024-11
+        highlights:
+          - "Scaled banking services to 1.7M+ active users by rebuilding CIB's mobile and online banking platform on React Native and NestJS under strict financial-compliance standards."
+          - "Took Egypt's first end-to-end digital banking onboarding flow from concept to production, cutting onboarding friction by shipping KYC verification, document upload, and biometric checks."
+          - "Built a self-serve analytics dashboard with React, D3.js, and GraphQL, cutting ad hoc reporting requests 70% for internal stakeholders."
+          - "Eliminated recurring critical incidents (4/month to zero) by resolving legacy race conditions, N+1 queries, and connection-pool exhaustion across core banking services."
+      - company: Twerlo
+        position: Full Stack Developer
+        location: Dubai, UAE
+        start_date: 2022-10
+        end_date: 2023-11
+        highlights:
+          - "Scaled Mottasl to process 20M+ messages for 7 enterprise clients by building and hardening Node.js and AWS integrations."
+          - "Cut peak-traffic latency 10x by designing a multi-region, event-driven architecture (Kafka event sourcing/CQRS, Redis caching, CDN/DNS failover)."
+          - "Scaled a multi-tenant SaaS architecture (schema-per-tenant, RBAC, Citus-based Postgres sharding) to 50+ tenants and 100K+ users."
+      - company: Epicore
+        position: Junior Full Stack Engineer
+        location: Graz, Austria
+        start_date: 2021-08
+        end_date: 2022-10
+        highlights:
+          - "Delivered cross-platform mobile and web apps and payment systems to production as a founding engineer, working within an Agile Scrum team across 3+ concurrent projects."
+          - "Processed $20k+ in transactions at under 0.1% error rate by building a PCI-compliant, idempotent Stripe payment system."
+          - "Boosted Lighthouse performance scores 74% and CI/CD pipeline speed 250% by rearchitecting build and deployment workflows; shipped a React Native app reaching 50K+ downloads."
+    Skills:
+      - label: Languages & Frameworks
+        details: TypeScript | JavaScript | Python | React.js | Next.js | Node.js | NestJS | React Native
+      - label: APIs & Data
+        details: REST | GraphQL | gRPC | WebSockets | PostgreSQL | MongoDB | Redis | Elasticsearch | pgvector
+      - label: Cloud & DevOps
+        details: AWS (CDK, Lambda, ECS, API Gateway, IAM/KMS) | Docker | Kubernetes | Istio | Microservices | CI/CD (GitHub Actions, ArgoCD) | Kafka | Terraform
+      - label: AI Engineering
+        details: LLM Integration (OpenAI/Claude APIs) | RAG | Agentic Workflows (MCP) | AI-Assisted Development (Claude Code, Cursor)
+      - label: System Design & Quality
+        details: Distributed Systems at Scale (20M+ events) | Load Balancing | Jest/Cypress/Playwright | SLO/SLA & Observability (Datadog, CloudWatch)
+      - label: Security & Compliance
+        details: OAuth2 | IAM | HIPAA-Aligned Data Handling | SOC 2 Type II
+      - label: Leadership
+        details: Team Leadership (3-4 Engineers) | Mentorship | Architecture Review | RFC Authorship | Cross-Team Coordination
+    Projects:
+      - name: CIB Mobile & Online Banking
+        summary: "*Digital Banking Platform*"
+        highlights:
+          - "Scaled to 1.7M+ active users by rebuilding CIB's mobile and online banking platform on React Native and NestJS under strict financial-compliance standards."
+          - "Took Egypt's first end-to-end digital onboarding flow to production, shipping KYC verification, document upload, and biometric checks."
+      - name: Mottasl
+        summary: "*Business Messaging Platform*"
+        highlights:
+          - "Scaled to 20M+ messages processed for 7 enterprise clients by building and hardening Node.js and AWS integrations."
+          - "Expanded e-commerce reach to 4+ ecosystems by integrating with Odoo, OTO, Zid, and Salla."
+      - name: "[Portfolio Yusef-Nsar.dev](https://yusef-nsar.dev)"
+        summary: "*3D & Modern Design Personal Portfolio*"
+        highlights:
+          - "Built a WebGPU-powered portfolio with scroll-driven 3D scenes and custom shaders using React Three Fiber, Three.js WebGPU/TSL, GSAP, and Lenis."
+          - "Shipped a built-in AI chat assistant, powered by Gemini with streamed responses, letting visitors ask about Yusef and his work directly."
+      - name: Parallellab
+        summary: "*Immersive Agency Landing Page*"
+        highlights:
+          - "Built an immersive 3D landing page for a boutique digital agency using React, R3F, and GSAP, with fluid transitions and animations that sell the studio's craft at a glance."
+          - "Used Astro island architecture to keep load times near-instant without sacrificing SEO."
+      - name: Just NFC
+        summary: "*Tap-to-Share Digital Business Cards*"
+        highlights:
+          - "Built tap-to-share digital business cards for small businesses with React and Next.js — branded profiles, instant NFC sharing, and a dashboard to manage a digital presence."
+          - "Designed a frictionless onboarding flow for non-technical users."
+    Education:
+      - institution: CAIRO UNIVERSITY
+        degree: Bachelor of Science in Computer Science
+        area: ""
+        location: Cairo, Egypt
+        summary: Major in CS, Bioinformatics and AI, Graduated with Honor Degree
+
+# =====================================================================
+# ARCHIVED — cut entirely during condensing, kept here for future use
+# =====================================================================
+#
+# Professional Experience (cut highlights):
+#
+#   Propio Languages Services:
+#     - "Built Elasticsearch-powered search delivering sub-200ms responses across 100K+ documents,
+#        distributed Redis caching and a webhook delivery system with retry/backoff and dead-letter
+#        queues achieving 99.9% delivery reliability."
+#     - "Tripled document-pipeline throughput under peak load by parallelizing processing with
+#        multi-threading and decoupling services via event-driven messaging."
+#     - "Cut onboarding ramp-up time in half for 4 junior/mid-level engineers by mentoring them on
+#        system design, code review, and AI-assisted development workflows." (merged into RAG bullet)
+#     - "Led technical due-diligence reviews, ran the architecture review board, and authored 10+
+#        internal RFCs that shaped platform-wide engineering standards."
+#
+#   Commercial International Bank (CIB):
+#     - "Built a self-serve analytics dashboard with React, D3.js, and GraphQL feeding into Looker,
+#        cutting ad hoc reporting requests 70% for internal stakeholders."
+#     - "Achieved SOC 2 Type II certification in 6 months with zero major findings by leading CIB's compliance program (audit logging, access controls via Vanta)."
+#     - "Delivered zero-disruption integration with core banking systems, payment gateways, and 3+
+#        third-party KYC providers, coordinating across 5+ internal teams."
+#
+#   Twerlo:
+#     - "Automated manual analyst and reconciliation workflows with Python and Zapier, saving
+#        20 hours/week."
+#     - "Implemented zero-trust security with OAuth2, mTLS, and IAM, eliminating unauthorized-access
+#        incidents post-rollout."
+#     - "Hardened operational resilience with sub-30-second MongoDB replica-set failover and
+#        automated blue/green rollback, cutting incident-response time from 20 minutes to under 5."
+#     - "Expanded e-commerce platform reach to 4+ ecosystems by shipping 10+ features and integrating
+#        Mottasl with Odoo, OTO, Zid, and Salla."
+#     - "Boosted Core Web Vitals scores 30%+ through code splitting, lazy loading, image optimization,
+#        and bundle-size reduction, later reaching WCAG 2.1 AA accessibility compliance."
+#     - "Increased checkout conversion 18% and cut churn 12% by partnering with Product/Growth on A/B-tested checkout and retention flows (Amplitude, LaunchDarkly)."
+#
+#   Epicore:
+#     - "Cut bundle size 35% through Webpack tree-shaking and code splitting."
+#     - "Rebuilt the legacy frontend on React, TypeScript, and Next.js." (merged into Lighthouse bullet)
+#     - "Built a Storybook/Figma-based design-system library adopted across 3+ product teams."
+#     - "Implemented Apollo GraphQL federation across 6+ services."
+#     - "Added Pact/Playwright contract testing that caught 15+ breaking third-party API changes
+#        before reaching production."
+#
+# Skills (cut entirely):
+#   Frontend: Angular | Zustand | Three.js | R3F | GSAP | Framer Motion
+#   Databases: MySQL | TypeORM
+#   Cloud & DevOps (as standalone): Azure | Helm | GitOps | RabbitMQ | Firebase | Git
+#   Observability (named tools): Sentry | New Relic | PagerDuty | Logging & Alerting
+#   Security (named tools/items): mTLS | OWASP | Snyk | Zero-Trust Architecture | Vanta
+#   Analytics & Growth: Amplitude | LaunchDarkly | A/B Testing | Looker
+#   Leadership (as listed skill): Agile/Scrum
+# =====================================================================
+#
+# Formatting (design/locale/settings) lives in cv-format.yaml, shared with
+# every applications/*/cv.yaml. Render this file with:
+#   rendercv render cv.yaml -d cv-format.yaml -lc cv-format.yaml -s cv-format.yaml
