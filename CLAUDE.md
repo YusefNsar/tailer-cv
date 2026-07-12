@@ -7,6 +7,9 @@ applies to, even for postings that don't match his current stack. When a
 job posting is pasted, that's a request to tailor — use the `tailor-cv`
 skill (`.claude/skills/tailor-cv/SKILL.md`, has the full workflow contract)
 without asking about fit; only ask if company/title is missing or ambiguous.
+When asked for a cover letter for one of these applications, use the
+`tailor-cover-letter` skill (`.claude/skills/tailor-cover-letter/SKILL.md`)
+instead.
 
 - `cv.yaml` — master CV, source of truth for all real experience/skills/
   projects. Holds only the `cv:` key. Never edit as part of tailoring.
