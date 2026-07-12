@@ -150,12 +150,14 @@ cv:
 #        before reaching production."
 #
 # Skills (cut entirely):
-#   Frontend: Angular | Zustand | Three.js | R3F | GSAP | Framer Motion
-#   Databases: MySQL | TypeORM
-#   Cloud & DevOps (as standalone): Azure | Helm | GitOps | RabbitMQ | Firebase | Git
-#   Observability (named tools): Sentry | New Relic | PagerDuty | Logging & Alerting
-#   Security (named tools/items): mTLS | OWASP | Snyk | Zero-Trust Architecture | Vanta
-#   Analytics & Growth: Amplitude | LaunchDarkly | A/B Testing | Looker
+#   Frontend: Angular | Zustand | Three.js | R3F | GSAP | Framer Motion | Redux | Context API
+#   Backend: Rust | C++ | .Net | C# | Java | Spring | Express | Saga | GO | PHP | Laravel | Flask | FastAPI
+#   Databases: MySQL | TypeORM | Idempotent Consumers | Backpressure | Fan-Out | Databases & Caching | Supabase | DynamoDB | cassandra | Data modeling
+#   Cloud & DevOps (as standalone): Azure | Helm | GitOps | RabbitMQ | Firebase | Git | Jenkins | GCP | GitLab CI | Semgrep (SAST) | Invicti (DAST) | BullMQ | GCP Pub/ Sub | SQS | linux
+#   Observability (named tools): Sentry | New Relic | PagerDuty | Logging & Alerting | Prometheus | Grafana (LGTM Stack) | OpenTelemetry
+#   Testing: Trivy
+#   Security (named tools/items): mTLS | OWASP | Snyk | Zero-Trust Architecture | Vanta | OAuth2 | JWT | Okta | Auth0 | SCIM | RBAC | OWASP Top 10  | DLQs | Distributed Locking
+#   Analytics & Growth: Amplitude | LaunchDarkly | A/B Testing | Looker | ADRs | Optimistic Concurrency
 #   Leadership (as listed skill): Agile/Scrum
 # =====================================================================
 #

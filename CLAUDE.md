@@ -24,32 +24,14 @@ This repo holds Yusef Nsar's CV, built with [RenderCV](https://github.com/render
   "Epicore" (the oldest employer, always the last `Professional Experience`
   entry) present on page 1, as a stand-in for "all 4 entries fit on page 1".
   Run this after every tailoring pass and compact content until it passes.
-- `prompts/tailor-cv.md` — the full workflow contract for tailoring a CV to a
-  job posting. **Read this before tailoring a CV.**
-
+- `scripts/check_ats.py` (needs `pypdf`) — checks ATS keyword coverage of a
+  rendered CV PDF against a `keywords.txt` requirement checklist (see the
+  `tailor-cv` skill), reporting `required:`/`preferred:` coverage counts.
 ## Job-application tailoring flow
 
 When the user pastes a job posting (title + company + description) and asks
-for a tailored CV, follow `prompts/tailor-cv.md` exactly. Short version:
-
-1. Read `cv.yaml` (master, ground truth — never fabricate beyond it).
-2. Create `applications/<Company> - <Job Title>/`.
-3. Put a tailored `cv.yaml` (`cv:` key ONLY — no `design:`/`locale:`/`settings:`
-   blocks, those come from `cv-format.yaml` at render time), a
-   `job_description.md` copy, and a `changes.md` diff summary in that folder.
-4. Run `scripts/check_layout.sh "applications/<Company> - <Job Title>/cv.yaml"`.
-   If it reports `FAIL` or exits nonzero (>2 pages, or the 4th
-   `Professional Experience` entry not on page 1), trim/shorten highlight
-   bullets and re-check until it passes — this is a hard requirement, not a
-   nice-to-have.
-5. Render the final PDF with:
-   ```
-   scripts/render_application.sh "applications/<Company> - <Job Title>" "<Job Title>"
-   ```
-   This produces `Yusef_Nsar-<Job_Title>.pdf` inside that same folder.
-
-The user reviews the tailored CV for factual accuracy afterward — your job is
-to optimize match quality as best as possible and then flag inaccuracies in changes.md for my to recheck.
+for a tailored CV, use the `tailor-cv` skill
+(`.claude/skills/tailor-cv/SKILL.md`) — it has the full workflow contract.
 
 ## Rendering
 
