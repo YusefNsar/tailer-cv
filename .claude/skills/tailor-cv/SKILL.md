@@ -5,191 +5,143 @@ description: Tailor Yusef Nsar's CV to a specific job posting when the user past
 
 # Tailor CV to a Job Posting
 
-You are helping Yusef Nsar produce a job-posting-tailored version of his CV with
-the single goal of maximizing his chance of landing an interview for that
-specific role.
-
-## Input
-
-The user will paste a job posting (title, company, and description/requirements).
-Sometimes just a URL or a pasted block of text. If the company or title is
-ambiguous or missing, ask before proceeding — the folder name depends on it.
+Goal: maximize Yusef's interview chances for one specific role.
 
 ## Ground truth
 
-`cv.yaml` at the repo root is the ONLY source of truth for Yusef's experience,
-skills, and projects. Treat it as complete and accurate. It now holds only the
-`cv:` content (plus an archived-content comment block) — formatting
-(`design:`/`locale:`/`settings:`) lives in `cv-format.yaml` at the repo root
-and is shared by every rendered CV.
+`cv.yaml` at the repo root is the ONLY source of truth for experience,
+skills, and projects. It holds only the `cv:` key — formatting lives in
+`cv-format.yaml`, shared by every rendered CV. A tailored
+`applications/*/cv.yaml` must contain ONLY the `cv:` key. Never edit the
+root `cv.yaml` or `cv-format.yaml`, and never regenerate the root
+`rendercv_output/`. If a linter flags missing design/locale/settings keys
+in a tailored file, that's an expected false positive.
 
-Hard rules — do not break these, even if it would make the CV a better match:
+## Hard rules
 
-- Never invent a company, degree, or certification that isn't in `cv.yaml`.
-  Every other detail — highlights, skills, wording, and even a past role's
-  `position:` title — is fair game to change or extend, as long as it's a
-  truthful extension of the real work already attributed to that
-  company/timeframe/tech stack in `cv.yaml`. The test for any addition or
-  edit is: does that role's actual highlights plausibly support this? A
-  seniority nudge (mid → senior) or reframing a role's title toward whichever
-  sub-discipline its real highlights actually leaned into (more
-  backend-flavored, frontend-flavored, infra/DevOps-flavored, QA-flavored,
-  etc.) is fair game when the highlights back it up — this is a judgment
-  call, not a fixed list of allowed swaps. Relabeling into a domain that
-  role's highlights give no support for at all (e.g. an engineering role
-  retitled into sales or marketing) is not. Flag every changed `position:`
-  title in `changes.md` as a `[reword]` line, same as any other wording
-  stretch.
-- You MAY NOT touch `cv-format.yaml` as part of a tailoring flow — formatting
-  must stay identical across applications. A tailored `applications/*/cv.yaml`
-  file must contain ONLY the `cv:` key (no `design:`/`locale:`/`settings:`
-  blocks) — `scripts/render_application.sh` merges it with `cv-format.yaml`
-  at render time.
-- Since the user reviews every generated CV afterward for factual accuracy,
-  optimize, add and edit freely for the perfect match quality first that grant an interview, then flag anything non-obvious you rephrased/added in `changes.md` (see below) so it's easy to double check and correct latter if needed by me.
-- **Pagination is a MUST, not a suggestion**: the rendered CV must be at most
-  2 pages, AND all 4 `Professional Experience` entries must fit on page 1.
-  This is checked with `scripts/check_layout.sh` (see "Pagination check" below)
-  — never skip it, and never hand back a CV that fails it.
+- **Never invent** a company, degree, or certification not in `cv.yaml`.
+- **Everything else is fair game as truthful extension**: highlights,
+  wording, even a role's `position:` title, so long as that role's real
+  highlights plausibly support it. Seniority nudges (mid→senior) and
+  sub-discipline reframing (toward whichever backend/frontend/infra/QA
+  flavor the highlights actually lean into) are fine. Retitling into a
+  domain the highlights don't support (engineering → sales) is not.
+- **Stack mismatches**: tailor toward the JD's stack without asking.
+  Genericize conflicting tool mentions instead of reattributing them —
+  "built a templating engine in Node.js" → "built a templating engine" for
+  a .NET posting. Never turn "built X in Node.js" into "built X in .NET."
+- **Pagination is a MUST**: ≤2 pages total, and all 4 Professional
+  Experience entries fit on page 1.
+- No upfront confirmation needed for bullet edits, added skills, or
+  wording — pre-authorized as long as flagged in `changes.md`. Only ask
+  first if company or job title is unclear/missing.
 
-## Tailoring approach
+## Steps to execute
 
-1. Read `cv.yaml` fully.
-2. Extract requirements from the job posting into an explicit, line-by-line
-   list — do not skip this or do it "by feel," long postings bury
-   requirements a holistic read will miss:
-   - `required:` every hard skill/tool/framework/practice named in a
-     Qualifications/Must-have/Responsibilities section.
-   - `preferred:` nice-to-haves from a Preferred/Bonus/Nice-to-have section.
-   - Separately note role-level, domain (fintech/healthtech/etc.), and any
-     soft-skill/leadership signals repeated more than once.
-   This list becomes `keywords.txt` (see "Output" below) and drives the
-   ATS coverage check.
-3. Identify the JD's single most-emphasized responsibility or pain point
-   (usually the first bullet under the main responsibilities section, or
-   whatever theme repeats most) — this is what the Summary and lead bullet
-   (step 4/5 below) must speak to directly.
-4. Set `cv.headline` to the exact job title from the posting (verbatim,
-   not a paraphrase) — this is what ATS keyword-matches against most heavily.
-5. Rewrite `Summary` to ONE minimal, maximum-impact line that leads with a
-   strong action verb and result (same style as the master CV's summary —
-   e.g. "Re-architected ... cutting infrastructure costs 40%..."), and that
-   speaks directly to the priority identified in step 3 — not just "a strong
-   line" in the master CV's general style. Do NOT state years of experience
-   or restate a job title/position name in this line — the headline already
-   carries the title, and a numeric years claim reads as filler, not impact.
-   Use only claims already supported elsewhere in the new CV.
-6. Reorder and edit `Professional Experience` highlights per role so the
-   most relevant, keyword-matching bullets lead, with the single most
-   relevant role's lead bullet speaking directly to the priority identified
-   in step 3. You can drop or edit a bullet from a job entry if it's
-   irrelevant to this posting, but keep every job entry (never delete an
-   entire employer). A role's `position:` title may also be adjusted — see
-   the hard rule above on bounded title changes.
-7. Reorder `Skills` categories/labels so the most relevant to this posting
-   are listed first. You are pre-authorized to add skills that aren't in the
-   master CV when it improves match quality — do NOT ask for confirmation
-   before adding one; just add it and flag it as an `[add]` line in
-   `changes.md` for the user to check afterward.
-8. Reorder or edit `Projects` — keep the ones most relevant to the posting,
-   cut ones with no relevance if space/focus is a concern.
-9. Keep total length roughly the same as the original
-10. Mirror the job posting's terminology, terms and language (e.g. if
-    they say "microservices" and Yusef's bullet says "distributed services",
-    align wording) — this measurably helps with ATS keyword
-    matching, even at the cost of accuracy, just flag it in changes.md.
-
-## ATS keyword coverage check
-
-Coverage is verified, not assumed — the requirement list from step 2 becomes
-a checklist run against the actual rendered PDF text, the same way a real
-ATS parser would see it. `check_layout.sh`'s scratch PDF is cleaned up
-before it returns, so this check runs against the real final PDF instead
-(produced by `scripts/render_application.sh`, see "Steps to execute" below),
-after the pagination check already passes:
-
-1. Write the requirement list from step 2 to
-   `applications/<timestamp>_<Company> - <Job Title>/keywords.txt`, one line
-   per requirement (see the "Output" section below for the exact format).
-2. Once the pagination check passes and the final PDF has been rendered, run
-   `python3 scripts/check_ats.py "applications/<timestamp>_<Company> - <Job Title>/Yusef_Nsar-<Job_Title>.pdf" "applications/<timestamp>_<Company> - <Job Title>/keywords.txt"`.
-   It prints `COVERED`/`MISSING` per requirement plus `required: X/Y covered`
-   and `preferred: X/Y covered` summaries. Exit code is always 0 — this is a
-   diligence gate, not a hard pass/fail like pagination.
-3. For every `MISSING required:` item, either (a) weave in a truthful
-   mention if it's a defensible extension of real work already in `cv.yaml`
-   (flag as `[add]` in `changes.md`, same as any other addition), or (b)
-   leave it out and record a one-line reason in the Match Report (see
-   `changes.md` structure below) — e.g. genuinely no adjacent real
-   experience. Never leave a missing required keyword unaddressed and
-   unexplained.
-4. If step 3 changed `cv.yaml` content, re-run the pagination check, re-render,
-   and re-run this check before finalizing — an added phrase can both push
-   the CV past the page limit and shift coverage.
+1. Get the job posting (title + company + full description). Ask if
+   missing/ambiguous — the folder name depends on it.
+2. Read `/home/yusef/dev/cv/cv.yaml` fully.
+3. Extract exactly five things from the JD (read deliberately, not "by
+   feel" — long postings bury requirements):
+   - `required:` / `preferred:` — every named hard skill/tool/framework.
+   - seniority signal (junior/mid/senior/staff).
+   - domain (fintech/healthtech/e-commerce/etc., or none).
+   - the single most-emphasized responsibility/pain point (usually the
+     first responsibilities bullet, or the repeated theme).
+4. Get timestamp via `date +%y%m%d%H%M%S`, create
+   `applications/<timestamp>_<Company> - <Job Title>/`.
+5. Write `job_description.md` (verbatim posting) and `keywords.txt` (step
+   3 extraction — format below).
+6. Write the tailored `cv.yaml`:
+   - `cv.headline` = exact job title from posting, verbatim (heaviest ATS
+     signal).
+   - `Summary`: one line, action verb + result, speaking to the priority
+     from step 3. No years-of-experience claim, no restated title. Only
+     claims supported elsewhere in the new CV.
+   - `Professional Experience`: reorder highlights per role so the most
+     relevant/keyword-matching lead; the single most relevant role's lead
+     bullet speaks to the step-3 priority. Edit/drop weak bullets but
+     never delete an entire employer.
+   - `Skills`: reorder categories, most relevant first. Adding skills not
+     in the master CV is pre-authorized — flag as `[add]`.
+   - `Projects`: keep most relevant, cut irrelevant if space is tight.
+   - Mirror the JD's terminology over Yusef's own (e.g. their
+     "microservices" vs. his "distributed services") — flag as `[reword]`.
+   - Keep total length roughly unchanged.
+7. Run the pagination check (below); compact and retry until it passes.
+8. Run `scripts/render_application.sh "applications/<timestamp>_<Company> - <Job Title>" "<Job Title>"` from the repo root.
+9. Run the ATS keyword coverage check (below) against the rendered PDF. If
+   it changes `cv.yaml`, repeat steps 7-9.
+10. Write `changes.md`.
+11. Report back: what changed, why, and the final PDF path.
 
 ## Pagination check
 
-Every added word costs vertical space, and the master CV's layout already has
-very little slack — even small terminology-alignment edits (step 10) can push
-an entry past page 1 or the CV past 2 pages. This is checked after every
-render, not assumed:
+```
+scripts/check_layout.sh "applications/<timestamp>_<Company> - <Job Title>/cv.yaml"
+```
 
-1. Run `scripts/check_layout.sh "applications/<timestamp>_<Company> - <Job Title>/cv.yaml"`.
-   It renders the tailored CV to a scratch PDF and runs
-   `scripts/check_layout.py` (via `pypdf`) on it, which prints `pages=N` and
-   either `PASS`/`FAIL` for both the 2-page limit and whether "Epicore" (the
-   oldest employer, always the last `Professional Experience` entry) is
-   found on page 1 — a stand-in for "all 4 entries fit on page 1". Exit code
-   is 0 only if both checks pass.
-2. On any `FAIL` (or nonzero exit code), compact and retry: trim the
-   least-impactful highlight clause(s) first (prefer shortening a bullet
-   over deleting one, and prefer trimming the lowest-priority bullet in the
-   largest entry, usually Propio, over touching higher-priority ones).
-   Never fix this by editing `cv-format.yaml` (spacing/margins/font size) —
-   the fix must come from the `cv:` content only. Re-run step 1 and repeat
-   until it passes.
-3. Only once it passes, move on to the final render and the ATS keyword
-   coverage check above ("Steps to execute" below) and note any trims made
-   purely to fit pagination as `[cut]`/`[reword]` lines in `changes.md`
-   (distinct from trims made for relevance).
+Renders to a scratch PDF and runs `check_layout.py` (via `pypdf`), printing
+`pages=N` and PASS/FAIL for the 2-page limit and for whether "Epicore"
+(oldest employer, last Professional Experience entry) lands on page 1 —
+proxy for "all 4 entries fit on page 1." Exit 0 only if both pass. Treat as
+a black box; its printed output is the whole contract.
 
-## Output
+On FAIL: trim the least-impactful highlight clause(s) first — shorten
+before deleting, and trim the lowest-priority bullet in the largest entry
+(usually Propio) before higher-priority ones. Never fix by editing
+`cv-format.yaml`. Note pagination-driven trims as `[cut]`/`[reword]` in
+`changes.md`, separate from relevance-driven trims.
 
-Create a new folder:
+## ATS keyword coverage check
+
+Run only after pagination passes and the PDF is rendered:
+
+```
+python3 scripts/check_ats.py "applications/<timestamp>_<Company> - <Job Title>/Yusef_Nsar-<Job_Title>.pdf" "applications/<timestamp>_<Company> - <Job Title>/keywords.txt"
+```
+
+Prints COVERED/MISSING per requirement plus `required: X/Y covered` and
+`preferred: X/Y covered`. Always exits 0 — a diligence gate, not a
+pass/fail. Treat as a black box.
+
+For every `MISSING required:` item: weave in a truthful mention if it's a
+defensible extension of real `cv.yaml` work (flag `[add]`), or leave it out
+with a one-line reason in the Match Report. Never leave one unaddressed.
+
+## Output structure
 
 ```
 applications/YYMMDDHHMMSS_<Company> - <Job Title>/
-├── cv.yaml                          # tailored copy — `cv:` key ONLY, no design/locale/settings
-├── job_description.md               # verbatim copy of what the user gave you
-├── keywords.txt                     # requirement checklist fed to scripts/check_ats.py
-├── changes.md                       # human-readable diff summary (see below)
-└── Yusef_Nsar-<Job_Title>.pdf       # rendered via scripts/render_application.sh
+├── cv.yaml                          # tailored — `cv:` key ONLY
+├── job_description.md               # verbatim posting
+├── keywords.txt                     # step 3 extraction, feeds check_ats.py
+├── changes.md                       # human-readable diff summary
+└── Yusef_Nsar-<Job_Title>.pdf       # via scripts/render_application.sh
 ```
 
-`keywords.txt` format — one requirement per line, `required:` or
-`preferred:`, with `|`-separated synonyms where relevant (any one synonym
-counts as covered):
+**Naming**: timestamp prefix via `date +%y%m%d%H%M%S` (e.g.
+`260706143022_`), don't guess it. Sanitize `<Company>`/`<Job Title>` for
+the filesystem (strip `/ : |`), spaces OK. PDF slug uses underscores per
+`render_application.sh`'s own output — don't rename by hand; timestamp
+prefix is folder-only.
+
+**`keywords.txt`** — one line per fact. `#`-comments for
+seniority/domain/priority first (ignored by `check_ats.py`, ride along
+free); then the scored `required:`/`preferred:` lines, `|`-separated
+synonyms where relevant (any one counts as covered):
 
 ```
+# seniority: senior
+# domain: fintech
+# priority: reduce incident response time across distributed services
 required: LangChain|LangGraph
 required: GitOps
 preferred: Terraform|Pulumi
 ```
 
-Folder/file naming:
-- Prefix the folder name with the current local timestamp in
-  `YYMMDDHHMMSS` format (e.g. `260706143022_`) — get it with
-  `date +%y%m%d%H%M%S`, don't guess it. This records when the application
-  was generated and keeps folders sorted chronologically.
-- Sanitize `<Company>` and `<Job Title>` for the filesystem (strip characters
-  like `/`, `:`, `|`) but keep them human-readable — spaces are fine.
-- The PDF job-title slug uses underscores in place of spaces (e.g.
-  `Yusef_Nsar-Senior_Backend_Engineer.pdf`), matching what
-  `scripts/render_application.sh` produces automatically — don't rename it
-  by hand. The timestamp prefix is only on the folder, not on the PDF.
-
-`changes.md` structure — a flat, tag-prefixed list, one line per change, no
-headings, no filler. Optimize for a reviewer scanning it in seconds:
+**`changes.md`** — flat, tag-prefixed, one line per change, no headings,
+scannable in seconds:
 
 ```md
 # Changes for <Company> - <Job Title>
@@ -202,55 +154,23 @@ headings, no filler. Optimize for a reviewer scanning it in seconds:
 ## ATS Match
 - required: 9/11 covered
 - preferred: 3/6 covered
-- missing (required): <term> (<one-line reason — genuinely absent, no adjacent real experience, etc.>)
+- missing (required): <term> (<one-line reason>)
 ```
 
-Rules:
-- One line per change, past tense, no sub-bullets, no explanations unless the
-  change stretches accuracy (then add ` — <why>` at the end of that line).
-- Skip trivial/expected reorderings (e.g. routine skill-priority shuffles) —
-  only list reorders material enough to catch the reviewer's eye.
-- Omit a tag entirely if there's nothing to report under it — don't write
-  "None".
-- Merge related edits into one line instead of listing each sub-edit
-  separately (e.g. one `[reorder]` line for the whole Skills section, not one
-  per category).
-- The `## ATS Match` section is always present (output of `scripts/check_ats.py`
-  from the "ATS keyword coverage check" step above) — the counts line, plus
-  one `missing (required):` line per still-missing required item and why.
-  Omit the `missing (required):` line entirely if coverage is 100%.
+Rules: past tense, no sub-bullets; append ` — <why>` only if a change
+stretches accuracy. Skip trivial/expected reorderings — only material ones.
+Omit a tag entirely rather than writing "None." Merge related edits into
+one line (one `[reorder]` for the whole Skills section, not per category).
+`## ATS Match` is always present; one `missing (required):` line per gap;
+omit that line if coverage is 100%.
 
-## Steps to execute
+## Referencing past applications
 
-1. Ask for the job posting if not already given (title + company + full
-   description are all needed).
-2. Read `/home/yusef/dev/cv/cv.yaml`.
-3. Get the current timestamp with `date +%y%m%d%H%M%S` and create the
-   `applications/<timestamp>_<Company> - <Job Title>/` folder.
-4. Write `job_description.md` with the raw posting the user gave you.
-5. Write `keywords.txt` with the requirement list from "Tailoring approach"
-   step 2.
-6. Write the tailored `cv.yaml` into that folder.
-7. Run the pagination check (see "Pagination check" above) and compact/retry
-   until it passes.
-8. Run `scripts/render_application.sh "applications/<timestamp>_<Company> - <Job Title>" "<Job Title>"`
-   from the repo root to produce the final PDF.
-9. Run the ATS keyword coverage check (see "ATS keyword coverage check"
-   above) against that final PDF, and address every missing required item
-   (weave it in truthfully, or note why not). If this changes `cv.yaml`,
-   repeat steps 7–9 before moving on.
-10. Write `changes.md` (including any pagination-driven trims from step 7 and
-    the ATS Match Report from step 9).
-11. Report back a short summary: what changed and why, and the final PDF path.
+Don't scan the whole `applications/` tree — it grows with every job. Bound
+to the most recent:
 
-## Out of scope
+```
+ls applications/ | sort | tail -5
+```
 
-- Don't touch the root `cv.yaml` — it's the master copy, never edit it as
-  part of this flow.
-- Don't regenerate the root `rendercv_output/` — that belongs to the master
-  CV, not a tailored application.
-- Don't ask the user to confirm every bullet choice, wording change, or
-  added skill before rendering — all of that is pre-authorized as long as
-  it's flagged in `changes.md`; they review the output afterward. Do ask
-  upfront if the job posting itself is missing/ambiguous (title or company
-  unclear) — that's the only case that warrants a question.
+Only read files inside the folder(s) that returns.

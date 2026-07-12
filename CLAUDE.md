@@ -2,36 +2,25 @@
 
 This repo holds Yusef Nsar's CV, built with [RenderCV](https://github.com/rendercv/rendercv) v2.8.
 
-- `cv.yaml` — the master CV. Source of truth for all real experience, skills,
-  and projects. Holds only the `cv:` key (plus an archived-content comment
-  block). Never edit this as part of a job-application tailoring flow.
-- `cv-format.yaml` — shared `design:`/`locale:`/`settings:` blocks, merged in
-  at render time via rendercv's `-d`/`-lc`/`-s` flags. Never edit this as part
-  of a tailoring flow either — formatting must stay identical across every
-  rendered CV.
-- `rendercv_output/` — rendered output of the master `cv.yaml` (pdf/html/typ/png/md).
-- `fonts/` — Calibri font files used by the theme. Typst only resolves them
-  when the `fonts/` folder sits next to the YAML being rendered, so
-  `scripts/render_application.sh` temporarily copies it into the application
-  folder for the render and removes it afterward.
-- `web-cv/` — a separate web/React rendering of the CV (not part of the
-  RenderCV pipeline).
-- `applications/` — tailored, job-posting-specific CV versions (see below).
-- `scripts/render_application.sh` — renders a tailored `cv.yaml` inside an
-  `applications/` folder to a correctly-named PDF.
-- `scripts/check_layout.sh` (+ `scripts/check_layout.py`, needs `pypdf`) —
-  renders a `cv.yaml` to a scratch PDF and checks pagination: <=2 pages, and
-  "Epicore" (the oldest employer, always the last `Professional Experience`
-  entry) present on page 1, as a stand-in for "all 4 entries fit on page 1".
-  Run this after every tailoring pass and compact content until it passes.
-- `scripts/check_ats.py` (needs `pypdf`) — checks ATS keyword coverage of a
-  rendered CV PDF against a `keywords.txt` requirement checklist (see the
-  `tailor-cv` skill), reporting `required:`/`preferred:` coverage counts.
-## Job-application tailoring flow
+**Primary goal**: produce a *perfectly tailored* CV for each job Yusef
+applies to, even for postings that don't match his current stack. When a
+job posting is pasted, that's a request to tailor — use the `tailor-cv`
+skill (`.claude/skills/tailor-cv/SKILL.md`, has the full workflow contract)
+without asking about fit; only ask if company/title is missing or ambiguous.
 
-When the user pastes a job posting (title + company + description) and asks
-for a tailored CV, use the `tailor-cv` skill
-(`.claude/skills/tailor-cv/SKILL.md`) — it has the full workflow contract.
+- `cv.yaml` — master CV, source of truth for all real experience/skills/
+  projects. Holds only the `cv:` key. Never edit as part of tailoring.
+- `cv-format.yaml` — shared `design:`/`locale:`/`settings:`, merged in at
+  render time via `-d`/`-lc`/`-s`. Never edit as part of tailoring — must
+  stay identical across every rendered CV.
+- `rendercv_output/` — rendered output of the master `cv.yaml`.
+- `fonts/` — Calibri; `scripts/render_application.sh` copies it next to
+  whichever YAML is being rendered (Typst only resolves fonts that way).
+- `web-cv/` — separate web/React CV rendering, not part of the RenderCV pipeline.
+- `applications/` — tailored, job-posting-specific CV versions.
+- `scripts/render_application.sh`, `scripts/check_layout.sh`(+`.py`),
+  `scripts/check_ats.py` — pagination/ATS checks and render helper used by
+  the `tailor-cv` skill; see that skill for usage, they're not needed outside it.
 
 ## Rendering
 
