@@ -47,7 +47,10 @@ Read only from the target application folder:
    claims that were cut during tailoring.
 3. Write `applications/<folder>/cover_letter.txt` following the style
    contract above.
-4. Report back the path.
+4. Render a PDF alongside it: `python3 scripts/txt_to_pdf.py
+   applications/<folder>/cover_letter.txt` (produces
+   `cover_letter.pdf` in the same folder).
+5. Report back both paths.
 
 ## Example
 
